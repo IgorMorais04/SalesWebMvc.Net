@@ -1,20 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMvc.Data;
+using System.Configuration;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<SalesWebMvcContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SalesWebMvcContext") ?? throw new InvalidOperationException("Connection string 'SalesWebMvcContext' not found.")));
 
-// Add services to the container.
+// Acessando a string de conexão
+var connectionString = builder.Configuration.GetConnectionString("SalesWebMvcContext");
+
+// Usando o PostgreSQL, não MySQL
+builder.Services.AddDbContext<SalesWebMvcContext>(options =>
+    options.UseNpgsql(connectionString, npgsqlOptions => npgsqlOptions.MigrationsAssembly("SalesWebMvc")));
+
+// Adiciona os serviços ao contêiner
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
+// Configura o pipeline de requisições HTTP
+if (!app.Environment.IsDevelopment()) {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

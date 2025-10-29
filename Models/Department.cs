@@ -1,10 +1,6 @@
 ﻿namespace SalesWebMvc.Models {
-    public class Department 
-    {
+    public class Department {
         public int Id { get; set; }
-        public String Name { get; set; }
+        public string? Name { get; set; } // Torna a propriedade anulável
     }
-
-
 }
-
