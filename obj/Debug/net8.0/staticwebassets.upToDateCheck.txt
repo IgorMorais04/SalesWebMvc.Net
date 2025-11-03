@@ -9,6 +9,7 @@ wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-pulse.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
