@@ -2,21 +2,41 @@
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMvc.Data;
 using System.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Acessando a string de conexão
 var connectionString = builder.Configuration.GetConnectionString("SalesWebMvcContext");
 
-// Usando o PostgreSQL, não MySQL
 builder.Services.AddDbContext<SalesWebMvcContext>(options =>
-    options.UseNpgsql(connectionString, npgsqlOptions => npgsqlOptions.MigrationsAssembly("SalesWebMvc")));
+    options.UseNpgsql(connectionString, npgsqlOptions =>
+        npgsqlOptions.MigrationsAssembly("SalesWebMvc")));
 
-// Adiciona os serviços ao contêiner
+builder.Services.AddScoped<SeedingService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configura o pipeline de requisições HTTP
+// ✅ Aplique as migrações e rode o seed ANTES do pipeline
+using (var scope = app.Services.CreateScope()) {
+    var services = scope.ServiceProvider;
+
+    try {
+        var context = services.GetRequiredService<SalesWebMvcContext>();
+
+        // Aplica todas as migrações pendentes
+        context.Database.Migrate();
+
+        // Executa o seed
+        var seeder = services.GetRequiredService<SeedingService>();
+        seeder.Seed();
+    }
+    catch (Exception ex) {
+        // Log mínimo para você enxergar erros de seed
+        Console.WriteLine("Erro durante migração/seed: " + ex.Message);
+        throw;
+    }
+}
+
 if (!app.Environment.IsDevelopment()) {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
@@ -26,7 +46,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
