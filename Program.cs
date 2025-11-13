@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMvc.Data;
+using SalesWebMvc.Services;
 using System.Configuration;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,7 @@ builder.Services.AddDbContext<SalesWebMvcContext>(options =>
 
 builder.Services.AddScoped<SeedingService>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<SellerService>();
 
 var app = builder.Build();
 
