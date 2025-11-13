@@ -2,11 +2,11 @@
     public class Seller {
 
         public int Id { get; set; }
-        public String Name { get; set; }
-        public String Email { get; set; }
-        public DateTime BirtDate { get; set; }
+        public String? Name { get; set; }
+        public String? Email { get; set; }
+        public DateTime BirthDate { get; set; }
         public double BaseSalary { get; set; }
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>();
 
         public Seller() { }
@@ -15,7 +15,7 @@
             Id = id;
             Name = name;
             Email = email;
-            BirtDate = birtDate;
+            BirthDate = birtDate;
             BaseSalary = baseSalary;
             Department = department;
         }
